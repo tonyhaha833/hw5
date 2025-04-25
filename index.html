@@ -1,0 +1,107 @@
+<style>
+#chartdiv {
+  width: 100%;
+  max-width: 100%;
+  height: 550px;
+}
+</style>
+
+<!-- Resources -->
+<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/hierarchy.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+
+<!-- Chart code -->
+<script>
+am5.ready(function() {
+
+// Create root element
+var root = am5.Root.new("chartdiv");
+
+// Set themes
+root.setThemes([
+  am5themes_Animated.new(root)
+]);
+
+// Correctly combine all the data for the years 2022, 2023, and 2024
+var data = {
+  value: 0,
+  children: [
+    {
+      name: "2024",
+      children: [
+        { name: "亞洲地區", value: 6577539.00 },
+        { name: "非洲地區", value: 11540.00 },
+        { name: "美洲地區", value: 784855.00 },
+        { name: "大洋洲地區", value: 131720.00 },
+        { name: "歐洲地區", value: 349981.00 },
+        { name: "其他未列明", value: 2051.00 },
+        { name: "小計", value: 7857686.00 }
+      ]
+    },
+    {
+      name: "2023",
+      children: [
+        { name: "亞洲地區", value: 5432055.00 },
+        { name: "非洲地區", value: 9354.00 },
+        { name: "美洲地區", value: 639976.00 },
+        { name: "大洋洲地區", value: 104205.00 },
+        { name: "歐洲地區", value: 298986.00 },
+        { name: "其他未列明", value: 2375.00 },
+        { name: "小計", value: 6486951.00 }
+      ]
+    },
+    {
+      name: "2022",
+      children: [
+        { name: "亞洲地區", value: 696792.00 },
+        { name: "非洲地區", value: 3410.00 },
+        { name: "美洲地區", value: 108842.00 },
+        { name: "大洋洲地區", value: 14920.00 },
+        { name: "歐洲地區", value: 65990.00 },
+        { name: "其他未列明", value: 6008.00 },
+        { name: "小計", value: 895962.00 }
+      ]
+    }
+  ]
+};
+
+// Create wrapper container
+var container = root.container.children.push(am5.Container.new(root, {
+  width: am5.percent(100),
+  height: am5.percent(100),
+  layout: root.verticalLayout
+}));
+
+// Create series
+var series = container.children.push(am5hierarchy.ForceDirected.new(root, {
+  singleBranchOnly: false,
+  downDepth: 2,
+  topDepth: 1,
+  initialDepth: 1,
+  valueField: "value",
+  categoryField: "name",
+  childDataField: "children",
+  idField: "name",
+  linkWithField: "linkWith",
+  manyBodyStrength: -10,
+  centerStrength: 0.8
+}));
+
+series.get("colors").setAll({
+  step: 2
+});
+
+series.links.template.set("strength", 0.5);
+
+// Set the data
+series.data.setAll([data]);
+
+// Make stuff animate on load
+series.appear(1000, 100);
+
+}); // end am5.ready()
+</script>
+
+<!-- HTML -->
+<div id="chartdiv"></div>
