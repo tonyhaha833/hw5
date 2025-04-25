@@ -1,107 +1,147 @@
-<style>
-#chartdiv {
-  width: 100%;
-  max-width: 100%;
-  height: 550px;
-}
-</style>
-
-<!-- Resources -->
-<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-<script src="https://cdn.amcharts.com/lib/5/hierarchy.js"></script>
-<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
-
-<!-- Chart code -->
-<script>
-am5.ready(function() {
-
-// Create root element
-var root = am5.Root.new("chartdiv");
-
-// Set themes
-root.setThemes([
-  am5themes_Animated.new(root)
-]);
-
-// Correctly combine all the data for the years 2022, 2023, and 2024
-var data = {
-  value: 0,
-  children: [
-    {
-      name: "2024",
-      children: [
-        { name: "亞洲地區", value: 6577539.00 },
-        { name: "非洲地區", value: 11540.00 },
-        { name: "美洲地區", value: 784855.00 },
-        { name: "大洋洲地區", value: 131720.00 },
-        { name: "歐洲地區", value: 349981.00 },
-        { name: "其他未列明", value: 2051.00 },
-        { name: "小計", value: 7857686.00 }
-      ]
-    },
-    {
-      name: "2023",
-      children: [
-        { name: "亞洲地區", value: 5432055.00 },
-        { name: "非洲地區", value: 9354.00 },
-        { name: "美洲地區", value: 639976.00 },
-        { name: "大洋洲地區", value: 104205.00 },
-        { name: "歐洲地區", value: 298986.00 },
-        { name: "其他未列明", value: 2375.00 },
-        { name: "小計", value: 6486951.00 }
-      ]
-    },
-    {
-      name: "2022",
-      children: [
-        { name: "亞洲地區", value: 696792.00 },
-        { name: "非洲地區", value: 3410.00 },
-        { name: "美洲地區", value: 108842.00 },
-        { name: "大洋洲地區", value: 14920.00 },
-        { name: "歐洲地區", value: 65990.00 },
-        { name: "其他未列明", value: 6008.00 },
-        { name: "小計", value: 895962.00 }
-      ]
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>資料視覺化首頁</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    * {
+      box-sizing: border-box;
     }
-  ]
-};
 
-// Create wrapper container
-var container = root.container.children.push(am5.Container.new(root, {
-  width: am5.percent(100),
-  height: am5.percent(100),
-  layout: root.verticalLayout
-}));
+    body {
+      margin: 0;
+      font-family: 'Noto Sans TC', sans-serif;
+      background: #f5f5f5;
+      color: #333;
+    }
 
-// Create series
-var series = container.children.push(am5hierarchy.ForceDirected.new(root, {
-  singleBranchOnly: false,
-  downDepth: 2,
-  topDepth: 1,
-  initialDepth: 1,
-  valueField: "value",
-  categoryField: "name",
-  childDataField: "children",
-  idField: "name",
-  linkWithField: "linkWith",
-  manyBodyStrength: -10,
-  centerStrength: 0.8
-}));
+    .hero {
+      background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80') no-repeat center center/cover;
+      height: 400px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+      position: relative;
+    }
 
-series.get("colors").setAll({
-  step: 2
-});
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+    }
 
-series.links.template.set("strength", 0.5);
+    .hero h1, .hero p {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
 
-// Set the data
-series.data.setAll([data]);
+    .hero h1 {
+      font-size: 3em;
+      margin: 0;
+      animation: fadeInDown 1s ease;
+    }
 
-// Make stuff animate on load
-series.appear(1000, 100);
+    .hero p {
+      font-size: 1.3em;
+      margin-top: 10px;
+      animation: fadeInUp 1s ease;
+    }
 
-}); // end am5.ready()
-</script>
+    main {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
+      padding: 40px;
+      background: linear-gradient(to right, #f9fbe7, #e3f2fd);
+    }
 
-<!-- HTML -->
-<div id="chartdiv"></div>
+    .card {
+      background: rgba(255, 255, 255, 0.75);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: fadeInUp 1.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 15px;
+    }
+
+    .card h2 {
+      margin: 10px 0 10px;
+      color: #0077cc;
+    }
+
+    .card p {
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+
+    a.button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #0077cc;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    a.button:hover {
+      background-color: #005fa3;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="hero">
+    <h1>資料視覺化展示平台</h1>
+    <p>用視覺讓資料說話，探索亞洲與全球趨勢</p>
+  </section>
+
+  <main>
+    <div class="card">
+      <img src="1.jpg" alt="Bar Chart Race">
+      <h2>Bar Chart Race 動態長條圖</h2>
+      <p>從 1966 至 2024，動態呈現亞洲國家／地區變化趨勢，時間的流動一覽無遺。</p>
+      <a class="button" href="bachar race.html" target="_blank">立即觀看</a>
+    </div>
+
+    <div class="card">
+      <img src="2.jpg" alt="Bubble Chart">
+      <h2>氣泡圖：區域分布</h2>
+      <p>展示 2022–2024 年各大洲資料量，以氣泡大小與關聯呈現層級視覺效果。</p>
+      <a class="button" href="index.html" target="_blank">立即探索</a>
+    </div>
+  </main>
+
+</body>
+</html>
